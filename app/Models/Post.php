@@ -35,4 +35,16 @@ class Post extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function newPost($request):Post
+    {
+        return self::create([
+             'title' => $request->input('title'),
+             'slug' => $request->input('slug'),
+             'image' => $request->input('image'),
+             'content' => $request->input('content'),
+             'user_id' => 1,
+         ]);
+
+    }
 }

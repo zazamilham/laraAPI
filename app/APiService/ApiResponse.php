@@ -4,12 +4,16 @@ namespace App\APiService;
 
 use Illuminate\Http\JsonResponse;
 
-trait ApiResource
+trait ApiResponse
 {
 
     public function success($data = null, $code = 200, $message = 'Successfully'):JsonResponse
     {
-       return response()->json(['data' => $data , 'message' => $message], $code);
+        try {
+            return response()->json(['data' => $data , 'message' => $message], $code);
+        }catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
     }
 
     public function error($data = null, $code = 404, $message = 'Error'):JsonResponse
