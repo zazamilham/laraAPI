@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,15 +37,22 @@ class Post extends Model
 
     protected $guarded = [];
 
+    /**
+     * @throws \Exception
+     */
     public function newPost($request):Post
     {
+        $request->file('image')->store('image');
+
+        dd($image_path);
+
         return self::create([
              'title' => $request->input('title'),
              'slug' => $request->input('slug'),
              'image' => $request->input('image'),
              'content' => $request->input('content'),
-             'user_id' => 1,
+             'user_id' => 13
          ]);
 
     }
-}
+ }
