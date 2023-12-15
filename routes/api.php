@@ -20,5 +20,4 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::resource('posts',PostController::class);
-Route::get('posts/{post}',[PostController::class,'show']);
 
