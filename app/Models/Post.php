@@ -58,6 +58,7 @@ class Post extends Model
 
     public function updatePost($request): Post
     {
+
         $this->update([
                 'title' => $request->input('title'),
                 'slug' => $request->input('slug'),
@@ -68,7 +69,6 @@ class Post extends Model
 
         $request->file('image')->store('image');
         return self::create([
-
         ]);
     }
 }
