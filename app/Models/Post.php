@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use function Illuminate\Support\Facades\Vite;
@@ -41,12 +40,11 @@ class Post extends Model
     /**
      * @throws \Exception
      */
-    public function newPost($request):Post
+    public function newPost($request): Post
     {
-        $file = $request->file('image');
-        $fileName = time().'.'.$file->getClientOriginalExtension();
-        $imagePath = storage_path('images');
-        \Storage::move($imagePath,$fileName);
+
+        $fileName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+        \Storage::move(storage_path('images'), $fileName);
         return self::create([
             'title' => $request->input('title'),
             'slug' => $request->input('slug'),
@@ -58,17 +56,18 @@ class Post extends Model
 
     public function updatePost($request): Post
     {
+        if ($request->has('image')) {
+            $fileName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+            \Storage::move(storage_path('images'), $fileName);
+        }
 
         $this->update([
-                'title' => $request->input('title'),
-                'slug' => $request->input('slug'),
-                'image' => $request->has('image')?->input('image'),
-                'content' => $request->input('content'),
-                'user_id' => 13
-            ]);
-
-        $request->file('image')->store('image');
-        return self::create([
+            'title' => $request->input('title'),
+            'slug' => $request->input('slug'),
+            'image' => $request->has('image')?->input('image'),
+            'content' => $request->input('content'),
+            'user_id' => 12
         ]);
+
     }
 }

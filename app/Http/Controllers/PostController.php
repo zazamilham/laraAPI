@@ -38,12 +38,16 @@ class PostController extends Controller
      */
     public function store(PostFormRequest $request, Post $post): JsonResponse
     {
-        return $this->success($post->newPost($request)->orderby('id', 'desc')->first(), ResponseStatus::HTTP_CREATED, ResponseStatus::$statusTexts[201]);
+        return $this->success($post->newPost($request)
+            ->orderby('id', 'desc')
+            ->first(), ResponseStatus::HTTP_CREATED, ResponseStatus::$statusTexts[201]);
     }
 
     public function update(PostFormRequest $request, Post $post): JsonResponse
     {
-        return $this->success($post->updatePost($request)->orderby('id', 'desc')->first(), ResponseStatus::HTTP_CREATED, ResponseStatus::$statusTexts[201]);
+        return $this->success($post->updatePost($request)
+            ->orderby('id', 'desc')
+            ->first(), ResponseStatus::HTTP_CREATED, ResponseStatus::$statusTexts[201]);
     }
 }
 
