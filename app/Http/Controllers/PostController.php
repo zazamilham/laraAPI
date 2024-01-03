@@ -20,15 +20,11 @@ class PostController extends Controller
 
     public function index(): JsonResponse
     {
-        try {
-//            $this->setLog('id);
+
             return $this->success(Post::all(), ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage(), ResponseStatus::HTTP_NOT_FOUND, ResponseStatus::$statusTexts[404]);
-        }
     }
 
-    public function show(Post $post):JsonResponse
+    public function show(Post $post,$id):JsonResponse
     {
         return $this->success($post, ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
     }
@@ -45,9 +41,8 @@ class PostController extends Controller
 
     public function update(PostFormRequest $request, Post $post): JsonResponse
     {
-        return $this->success($post->updatePost($request)
-            ->orderby('id', 'desc')
-            ->first(), ResponseStatus::HTTP_CREATED, ResponseStatus::$statusTexts[201]);
+        $post->updatePost($request);
+        return $this->success($post, ResponseStatus::HTTP_CREATED, ResponseStatus::$statusTexts[201]);
     }
 }
 

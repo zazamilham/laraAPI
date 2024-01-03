@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use function Illuminate\Support\Facades\Vite;
 
 /**
  * App\Models\Post
@@ -40,34 +39,36 @@ class Post extends Model
     /**
      * @throws \Exception
      */
-    public function newPost($request): Post
+    public function newPost($request)
     {
 
         $fileName = time() . '.' . $request->file('image')->getClientOriginalExtension();
-        \Storage::move(storage_path('images'), $fileName);
+        $request->image->move(public_path('images'), $fileName);
+
         return self::create([
             'title' => $request->input('title'),
             'slug' => $request->input('slug'),
-            'image' => $request->input('image'),
+            'image' => $fileName,
             'content' => $request->input('content'),
-            'user_id' => 18
+            'user_id' => 2
         ]);
     }
 
-    public function updatePost($request): Post
+    public function updatePost($request): void
     {
+
         if ($request->has('image')) {
             $fileName = time() . '.' . $request->file('image')->getClientOriginalExtension();
-            \Storage::move(storage_path('images'), $fileName);
+            $request->image->move(public_path('images'), $fileName);
         }
 
-        $this->update([
+         $this->update([
             'title' => $request->input('title'),
             'slug' => $request->input('slug'),
-            'image' => $request->has('image')?->input('image'),
+            'image' => $request->has('image') ? public_path('images') : $this->image,
             'content' => $request->input('content'),
-            'user_id' => 12
         ]);
+
 
     }
 }
