@@ -61,14 +61,17 @@ class Post extends Model
             $fileName = time() . '.' . $request->file('image')->getClientOriginalExtension();
             $request->image->move(public_path('images'), $fileName);
         }
-
          $this->update([
             'title' => $request->input('title'),
             'slug' => $request->input('slug'),
             'image' => $request->has('image') ? public_path('images') : $this->image,
             'content' => $request->input('content'),
         ]);
-
-
     }
+
+    public function deletePost($post): void
+    {
+        $post->delete();
+    }
+
 }

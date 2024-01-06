@@ -20,11 +20,10 @@ class PostController extends Controller
 
     public function index(): JsonResponse
     {
-
-            return $this->success(Post::all(), ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
+        return $this->success(Post::all(), ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
     }
 
-    public function show(Post $post,$id):JsonResponse
+    public function show(Post $post, $id): JsonResponse
     {
         return $this->success($post, ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
     }
@@ -43,6 +42,12 @@ class PostController extends Controller
     {
         $post->updatePost($request);
         return $this->success($post, ResponseStatus::HTTP_CREATED, ResponseStatus::$statusTexts[201]);
+    }
+
+    public function destroy(Post $post): JsonResponse
+    {
+        $post->deletePost($post);
+        return $this->success($post, ResponseStatus::HTTP_NO_CONTENT, ResponseStatus::$statusTexts[204]);
     }
 }
 
