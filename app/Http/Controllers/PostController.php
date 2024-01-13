@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\APiService\ApiResponse;
 use App\Http\Requests\PostFormRequest;
+use App\Http\Resources\PostResource;
 use App\LogService\LogService;
 use App\Models\Post;
 
@@ -20,12 +21,13 @@ class PostController extends Controller
 
     public function index(): JsonResponse
     {
-        return $this->success(Post::all(), ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
+        return $this->success(PostResource::collection(Post::all()), ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
     }
 
-    public function show(Post $post, $id): JsonResponse
+    public function show(Post $post): JsonResponse
     {
-        return $this->success($post, ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
+//        return new PostResource($post);
+        return $this->success(new PostResource($post), ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
     }
 
     /**

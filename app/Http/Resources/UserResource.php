@@ -5,9 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostResource extends JsonResource
+class UserResource extends JsonResource
 {
-//    public static $wrap = 'exampleWrap';
     /**
      * Transform the resource into an array.
      *
@@ -15,10 +14,14 @@ class PostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+//        return parent::toArray($request);
         return [
-            'title' => $this->title,
-            'content' => $this->content,
+            'id' => $this->id,
+            'email' => $this->email,
+            'name' => $this->name,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'posts'=>  PostResource::collection($this->whenLoaded('posts'))
         ];
+
     }
 }

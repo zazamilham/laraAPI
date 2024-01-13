@@ -47,6 +47,9 @@ class Handler extends ExceptionHandler
         if ($e instanceof MethodNotAllowedHttpException) {
             return $this->error('', 404, $e->getMessage());
         }
+        if ($e instanceof \Exception) {
+            return $this->error('', 404, $e->getMessage());
+        }
         if (config('app.debug')) {
             return Parent::render($request, $e);
         }
