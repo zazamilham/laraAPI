@@ -21,7 +21,13 @@ class PostController extends Controller
 
     public function index(): JsonResponse
     {
-        return $this->success(PostResource::collection(Post::all()), ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
+//        return PostResource::collection(Post::paginate(3);
+        $posts = PostResource::collection(Post::paginate(5));
+        return $this->success([
+            'posts' => $posts,
+            'links' => $posts->response()->getData()->links,
+            'meta' => $posts->response()->getData()->meta,
+        ], ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
     }
 
     public function show(Post $post): JsonResponse
