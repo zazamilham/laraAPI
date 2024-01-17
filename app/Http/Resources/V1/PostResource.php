@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1;
 
-use App\Http\Resources\V1\PostResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class PostResource extends JsonResource
 {
+//    public static $wrap = 'exampleWrap';
     /**
      * Transform the resource into an array.
      *
@@ -15,14 +15,10 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-//        return parent::toArray($request);
         return [
-            'id' => $this->id,
-            'email' => $this->email,
-            'name' => $this->name,
+            'title' => $this->title,
+            'content' => $this->content,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'posts' => PostResource::collection($this->whenLoaded('posts'))
         ];
-
     }
 }

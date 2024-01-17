@@ -39,24 +39,22 @@ class Post extends Model
     /**
      * @throws \Exception
      */
-    public function newPost($request)
+    public function newPost($request): Post
     {
 
         $fileName = time() . '.' . $request->file('image')->getClientOriginalExtension();
         $request->image->move(public_path('images'), $fileName);
-
         return self::create([
             'title' => $request->input('title'),
             'slug' => $request->input('slug'),
             'image' => $fileName,
             'content' => $request->input('content'),
-            'user_id' => 2
+            'user_id' => User::inRandomOrder()->value('id')
         ]);
     }
 
     public function updatePost($request): void
     {
-
         if ($request->has('image')) {
             $fileName = time() . '.' . $request->file('image')->getClientOriginalExtension();
             $request->image->move(public_path('images'), $fileName);

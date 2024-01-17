@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1;
 
 use App\APiService\ApiResponse;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PostFormRequest;
-use App\Http\Resources\PostResource;
+use App\Http\Resources\V1\PostResource;
 use App\LogService\LogService;
 use App\Models\Post;
-
-
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseStatus;
 
@@ -18,11 +16,10 @@ class PostController extends Controller
 {
 
     use ApiResponse, LogService;
-
+    private const POST_PAGINATE = 5;
     public function index(): JsonResponse
     {
-//        return PostResource::collection(Post::paginate(3);
-        $posts = PostResource::collection(Post::paginate(5));
+        $posts = PostResource::collection(Post::paginate(self::POST_PAGINATE));
         return $this->success([
             'posts' => $posts,
             'links' => $posts->response()->getData()->links,
