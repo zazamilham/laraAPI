@@ -20,7 +20,9 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        return $this->success(UserResource::collection(User::all()->load('posts')), ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
+        return $this->success(UserResource::collection(User::all()->load('posts')),
+            ResponseStatus::HTTP_OK,
+            ResponseStatus::$statusTexts[200]);
     }
 
     /**
@@ -36,7 +38,9 @@ class UserController extends Controller
      */
     public function show(User $user): JsonResponse
     {
-        return $this->success(new UserResource($user->load('posts')), ResponseStatus::HTTP_OK, ResponseStatus::$statusTexts[200]);
+        return $this->success(new UserResource($user->load('posts')),
+            ResponseStatus::HTTP_OK,
+            ResponseStatus::$statusTexts[200]);
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\V1\PostController as V1PostController;
 use App\Http\Controllers\V2\PostController as V2PostController;
@@ -23,14 +24,14 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::apiResource('posts', V1PostController::class);
     Route::apiResource('users', UserController::class);
-
 });
 
 Route::prefix('v2')->group(function () {
     Route::apiResource('posts', V2PostController::class);
     Route::apiResource('users', UserController::class);
-
 });
+
+Route::post('register', [AuthController::class,'register']);
 
 
 
