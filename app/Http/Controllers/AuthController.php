@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\APiService\ApiResponse;
 use App\Http\Middleware\Authenticate;
+use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseStatus;
 
 
@@ -38,11 +38,45 @@ class AuthController extends Authenticate
 //
 //        $user->save();
 
+        $usrRegister = $user->register($request);
+        $token = $usrRegister->createToken('mohammad')->accessToken;
         return $this->success([
-            'user' => $user->register($request),
-            'token' => $user->createToken('mohammad')->accessToken
+            'user' => $usrRegister,
+            'token' => $token
         ],
             ResponseStatus::HTTP_CREATED,
-            'User successfully created');
+            'User register successfully ');
+    }
+
+    public function login(AuthLoginRequest $request, User $user): JsonResponse
+    {
+//        $validate = \Validator::make($request->all(), [
+//            'email' => 'required|email|exists:users,email',
+//            'password' => 'required'
+//        ]);
+//        if ($validate->fails()) {
+//            return $this->error(null, ResponseStatus::HTTP_UNPROCESSABLE_ENTITY, $validate->messages());
+//        }
+
+        if (!$usrLogin = $user->login($request)) {
+            return $this->error(null, ResponseStatus::HTTP_UNPROCESSABLE_ENTITY, 'password is incorrect');
+        }
+        $token = $usrLogin->createToken('mohammad')->accessToken;
+        return $this->success([
+            'user' => $usrLogin,
+            'token' => $token
+        ],
+            ResponseStatus::HTTP_OK,
+            'User login successfully'
+        );
+    }
+
+    public function logout(): JsonResponse
+    {
+        auth()->user()->token()->delete();
+
+        return $this->success(null,
+            ResponseStatus::HTTP_OK,
+            'User logout Successfully');
     }
 }

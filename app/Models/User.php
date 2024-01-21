@@ -3,11 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Symfony\Component\HttpFoundation\Response as ResponseStatus;
 
 /**
  * App\Models\User
@@ -85,6 +87,14 @@ class User extends Authenticatable
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
+    }
 
+    public function login($request)
+    {
+        $user = self::where('email', $request->email)->first();
+        if (!Hash::check($request->password, $user->password)) {
+            return false;
+        }
+        return $user;
     }
 }
